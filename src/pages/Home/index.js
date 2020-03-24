@@ -1,101 +1,47 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { ProductList } from './styles';
 import { MdAddShoppingCart } from 'react-icons/md'
+import { formatPrice } from '../../utils/format'
+import api from '../../servers/api'
 
-export default function Home() {
-  return (
-    <ProductList>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-adidas-duramo-lite-20-masculino/10/NQQ-0375-010/NQQ-0375-010_zoom2.jpg?ts=1578564938&ims=326x"
-        alt="Tênis Adidas" />
-        <strong>Tênis muito legal</strong>
-        <span>R$ 259,89</span>
+export default class Home extends Component {
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#fff" size={16} /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-adidas-duramo-lite-20-masculino/10/NQQ-0375-010/NQQ-0375-010_zoom2.jpg?ts=1578564938&ims=326x"
-        alt="Tênis Adidas" />
-        <strong>Tênis muito legal</strong>
-        <span>R$ 259,89</span>
+  state = {
+    produtcs: []
+  }
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#fff" size={16} /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-adidas-duramo-lite-20-masculino/10/NQQ-0375-010/NQQ-0375-010_zoom2.jpg?ts=1578564938&ims=326x"
-        alt="Tênis Adidas" />
-        <strong>Tênis muito legal</strong>
-        <span>R$ 259,89</span>
+  async componentDidMount() {
+    const response = await api.get(`products`);
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#fff" size={16} /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-adidas-duramo-lite-20-masculino/10/NQQ-0375-010/NQQ-0375-010_zoom2.jpg?ts=1578564938&ims=326x"
-        alt="Tênis Adidas" />
-        <strong>Tênis muito legal</strong>
-        <span>R$ 259,89</span>
+    // ({}) força o retorno de um objeto
+    const data = response.data.map(item => ({
+      ...item,
+      priceFormatted: formatPrice(item.price)
+    }))
 
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#fff" size={16} /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-adidas-duramo-lite-20-masculino/10/NQQ-0375-010/NQQ-0375-010_zoom2.jpg?ts=1578564938&ims=326x"
-        alt="Tênis Adidas" />
-        <strong>Tênis muito legal</strong>
-        <span>R$ 259,89</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#fff" size={16} /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-adidas-duramo-lite-20-masculino/10/NQQ-0375-010/NQQ-0375-010_zoom2.jpg?ts=1578564938&ims=326x"
-        alt="Tênis Adidas" />
-        <strong>Tênis muito legal</strong>
-        <span>R$ 259,89</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#fff" size={16} /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img src="https://static.netshoes.com.br/produtos/tenis-adidas-duramo-lite-20-masculino/10/NQQ-0375-010/NQQ-0375-010_zoom2.jpg?ts=1578564938&ims=326x"
-        alt="Tênis Adidas" />
-        <strong>Tênis muito legal</strong>
-        <span>R$ 259,89</span>
-
-        <button type="button">
-          <div>
-            <MdAddShoppingCart color="#fff" size={16} /> 3
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-    </ProductList>
-    )
+    this.setState({ produtcs: data })
+  }
+  render() {
+    const { produtcs } = this.state;
+    return (
+      <ProductList>
+      {
+        produtcs.map(produt => (
+          <li key={produt.id}>
+            <img src={produt.image}
+            alt={produt.title} />
+            <strong>{produt.title}</strong>
+            <span>{produt.priceFormatted}</span>
+            <button type="button">
+              <div>
+                <MdAddShoppingCart color="#fff" size={16} /> 3
+              </div>
+              <span>ADICIONAR AO CARRINHO</span>
+            </button>
+          </li>
+        ))
+      }
+      </ProductList>
+      )
+  }
 }
