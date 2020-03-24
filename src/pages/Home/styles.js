@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { darken } from 'polished'
 export const ProductList = styled.ul`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3,1fr);
   grid-gap: 20px;
   list-style: none;
 
@@ -18,45 +18,48 @@ export const ProductList = styled.ul`
       max-width: 250px;
     }
 
+    /* Título */
     > strong {
-      font-size: 16;
-      font-weight: bold;
-      color: #333;
-      line-height: 20px;
-      margin-top: 5px;
+      font-size: 14px;
+      color: #111;
+      font-family: Roboto;
     }
 
+    /* Preço */
     > span {
       font-size: 21px;
       font-weight: bold;
+      color: #111;
       margin: 5px 0 20px;
     }
 
+    /* Butão */
     button {
       display: flex;
+      flex-direction: row;
+      border: 0px;
+      border-radius: 4px;
+      align-items: center;
       background: #7159c1;
       color: #FFF;
-      border: 0;
-      border-radius: 4px;
-      overflow: hidden;
       margin-top: auto;
-
-      align-items: center;
-      transition: background .2s;
+      opacity: background .2s;
 
       &:hover {
-        background: ${darken(0.1, '#7159c1')};
+        background: ${darken(0.09, '#7159c1')}
       }
 
       > div {
         display: flex;
-        padding: 12px;
+        flex-direction: row;
         align-items: center;
-        background: rgba(0,0,0,0.1);
+        padding: 12px;
+        background: rgba(0,0,0, 0.1);
 
-        svg {
+        > svg {
           margin-right: 5px;
         }
+
       }
 
       > span {
@@ -64,6 +67,7 @@ export const ProductList = styled.ul`
         text-align: center;
       }
     }
+
 
   }
 `;
