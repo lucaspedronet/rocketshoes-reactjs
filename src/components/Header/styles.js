@@ -6,16 +6,17 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
+  height: 64px;
+  margin-bottom: 10px;
 `;
 export const Cart = styled(Link)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  transition: .2s;
+  transition: 0.2s;
 
   &:hover {
-    opacity: 0.7
+    opacity: 0.7;
   }
 
   div {
@@ -24,7 +25,7 @@ export const Cart = styled(Link)`
 
     strong {
       display: block;
-      color: #FFF;
+      color: #fff;
       font-size: 14px;
     }
     span {

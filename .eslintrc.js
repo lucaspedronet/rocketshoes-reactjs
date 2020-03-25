@@ -13,7 +13,7 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
-  perser: 'babel-eslint',
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -27,10 +27,14 @@ module.exports = {
   ],
   rules: {
     'prettier/prettier': 'error',
-    'react/jsx-file-extensio': [
+    'react/jsx-filename-extension': [
       'warn',
-      { extensions: ['.jsx', '.js']}
+      {
+        extensions: ['.jsx', '.js']
+      }
      ],
-     'import/prevere-default-exprt':'off'
+     'import/prefer-default-export':'off',
+     'no-param-reassign': 'off',
+     'no-console': ["error", { allow: ["tron"] }]
   },
 };

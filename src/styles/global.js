@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components'
-import imageBraground from '../assets/images/imageBackground.svg'
+import { createGlobalStyle } from 'styled-components';
+import imageBraground from '../assets/images/imageBackground.svg';
 
 export default createGlobalStyle`
   @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
@@ -29,4 +29,4 @@ export default createGlobalStyle`
   button {
     cursor: pointer;
   }
-`
+`;
