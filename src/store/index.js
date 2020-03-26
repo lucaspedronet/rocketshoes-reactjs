@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import createSagaMiddlware from 'redux-saga';
+import createSagaMiddleware from 'redux-saga';
 
 /**
  * roots de reducers e sagas
@@ -15,8 +15,7 @@ const sagaMonitor =
 /**
  * @interceptions: Middleware de sagas
  */
-const sagaMiddleware = createSagaMiddlware({ sagaMonitor });
-
+const sagaMiddleware = createSagaMiddleware({ sagaMonitor });
 /**
  * compose() faz a combinação das functions createEnhancer e applyMiddleware
  */

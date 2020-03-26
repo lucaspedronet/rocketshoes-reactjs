@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import './config/reactotronConfig';
-
+import { ToastContainer } from 'react-toastify';
 import Header from './components/Header';
 import Global from './styles/global';
 import Routes from './routes';
@@ -17,6 +17,7 @@ function App() {
         <Header />
         <Routes />
         <Global />
+        <ToastContainer autoClose={5000} />
       </BrowserRouter>
     </Provider>
   );
