@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import PropTypes from 'prop-types';
 
 import { MdAddShoppingCart } from 'react-icons/md';
 import * as CartActions from '../../store/modules/Cart/actions';
@@ -14,6 +15,8 @@ function Home({ amount, addToCartResquest }) {
   const [products, setProduct] = useState([]);
 
   useEffect(() => {
+    console.tron.log(typeof amount);
+    console.tron.log(typeof addToCartResquest);
     async function loadingProducts() {
       const response = await api.get(`products`);
 
@@ -51,6 +54,11 @@ function Home({ amount, addToCartResquest }) {
     </ProductList>
   );
 }
+
+Home.propTypes = {
+  addToCartResquest: PropTypes.func.isRequired,
+  amount: PropTypes.shape({}).isRequired,
+};
 
 const mapStateToProps = (state) => ({
   amount: state.Cart.reduce((amount, product) => {
