@@ -8,18 +8,19 @@ import {
   MdDelete,
 } from 'react-icons/md';
 
+import PropTypes from 'prop-types';
 import * as CartAction from '../../store/modules/Cart/actions';
 
 import { Container, ProductTable, Total } from './styles';
 import { formatPrice } from '../../utils/format';
 
-function Cart({ cart, total, removeToCart, updateAmount }) {
+function Cart({ cart, total, removeToCart, updateAmountRequest }) {
   function increment(product) {
-    updateAmount(product.id, product.amount + 1);
+    updateAmountRequest(product.id, product.amount + 1);
   }
 
   function decrement(product) {
-    updateAmount(product.id, product.amount - 1);
+    updateAmountRequest(product.id, product.amount - 1);
   }
 
   return (
@@ -35,7 +36,7 @@ function Cart({ cart, total, removeToCart, updateAmount }) {
         </thead>
         <tbody>
           {cart.map((product) => (
-            <tr key={product.id}>
+            <tr key={String(product.id)}>
               <td>
                 <img src={product.image} alt={product.title} />
               </td>
@@ -85,6 +86,25 @@ function Cart({ cart, total, removeToCart, updateAmount }) {
     </Container>
   );
 }
+
+Cart.propTypes = {
+  cart: PropTypes.arrayOf([
+    PropTypes.shape({
+      product: PropTypes.shape({
+        id: PropTypes.number,
+        // price: PropTypes.number,
+        title: PropTypes.string,
+        image: PropTypes.string,
+        priceFormatter: PropTypes.string,
+        amount: PropTypes.number,
+        subtotal: PropTypes.string,
+      }),
+    }),
+  ]).isRequired,
+  total: PropTypes.string.isRequired,
+  removeToCart: PropTypes.func.isRequired,
+  updateAmountRequest: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   cart: state.Cart.map((product) => ({
