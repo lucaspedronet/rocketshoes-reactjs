@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { MdAddShoppingCart } from 'react-icons/md';
-import * as CartActions from '../../store/modules/Cart/actions';
+import { addToCartResquest } from '../../store/modules/Cart/actions';
 
 import { ProductList } from './styles';
 import { formatPrice } from '../../utils/format';
 
 import api from '../../servers/api';
 
-function Home({ amount, addToCartResquest }) {
+export default function Home() {
   const [products, setProduct] = useState([]);
 
+  const amount = useSelector((state) =>
+    state.Cart.reduce((refAmount, product) => {
+      refAmount[product.id] = product.amount;
+
+      return refAmount;
+    }, {})
+  );
+
   useEffect(() => {
-    console.tron.log(typeof amount);
-    console.tron.log(typeof addToCartResquest);
     async function loadingProducts() {
       const response = await api.get(`products`);
 
@@ -32,8 +37,10 @@ function Home({ amount, addToCartResquest }) {
     loadingProducts();
   }, []);
 
+  const dispatch = useDispatch();
+
   function handleAddToCart(id) {
-    addToCartResquest(id);
+    dispatch(addToCartResquest(id));
   }
   return (
     <ProductList>
@@ -56,24 +63,5 @@ function Home({ amount, addToCartResquest }) {
 }
 
 Home.propTypes = {
-  addToCartResquest: PropTypes.func.isRequired,
   amount: PropTypes.shape({}).isRequired,
 };
-
-const mapStateToProps = (state) => ({
-  amount: state.Cart.reduce((amount, product) => {
-    amount[product.id] = product.amount;
-
-    return amount;
-  }, {}),
-});
-
-/**
- *
- * @param {*} dispatch: responsável por dispara as actions
- * @function bindActionCreators: faz a combinação de todas as action de Cart para dispatch
- */
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(CartActions, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);

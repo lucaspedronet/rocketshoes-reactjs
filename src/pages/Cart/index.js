@@ -1,27 +1,46 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   MdRemoveCircleOutline,
   MdAddCircleOutline,
   MdDelete,
 } from 'react-icons/md';
 
-import PropTypes from 'prop-types';
-import * as CartAction from '../../store/modules/Cart/actions';
+import {
+  removeToCart,
+  updateAmountRequest,
+} from '../../store/modules/Cart/actions';
 
 import { Container, ProductTable, Total } from './styles';
 import { formatPrice } from '../../utils/format';
 
-function Cart({ cart, total, removeToCart, updateAmountRequest }) {
+export default function Cart() {
+  const dispatch = useDispatch();
+
   function increment(product) {
-    updateAmountRequest(product.id, product.amount + 1);
+    dispatch(updateAmountRequest(product.id, product.amount + 1));
   }
 
   function decrement(product) {
-    updateAmountRequest(product.id, product.amount - 1);
+    dispatch(updateAmountRequest(product.id, product.amount - 1));
   }
+
+  const cart = useSelector((state) =>
+    state.Cart.map((product) => ({
+      ...product,
+      subtotal: formatPrice(product.price * product.amount),
+    }))
+  );
+
+  const total = useSelector((state) =>
+    formatPrice(
+      state.Cart.reduce((isTotal, product) => {
+        return isTotal + product.price * product.amount;
+      }, 0)
+    )
+  );
 
   return (
     <Container>
@@ -67,7 +86,7 @@ function Cart({ cart, total, removeToCart, updateAmountRequest }) {
                   <MdDelete
                     size={20}
                     color="#7159c1"
-                    onClick={() => removeToCart(product.id)}
+                    onClick={() => dispatch(removeToCart(product.id))}
                   />
                 </button>
               </td>
@@ -88,38 +107,18 @@ function Cart({ cart, total, removeToCart, updateAmountRequest }) {
 }
 
 Cart.propTypes = {
-  cart: PropTypes.arrayOf([
-    PropTypes.shape({
-      product: PropTypes.shape({
-        id: PropTypes.number,
-        // price: PropTypes.number,
-        title: PropTypes.string,
-        image: PropTypes.string,
-        priceFormatter: PropTypes.string,
-        amount: PropTypes.number,
-        subtotal: PropTypes.string,
-      }),
+  cart: PropTypes.shape({
+    product: PropTypes.shape({
+      id: PropTypes.number,
+      // price: PropTypes.number,
+      title: PropTypes.string,
+      image: PropTypes.string,
+      priceFormatter: PropTypes.string,
+      amount: PropTypes.number,
+      subtotal: PropTypes.string,
     }),
-  ]).isRequired,
-  total: PropTypes.string.isRequired,
-  removeToCart: PropTypes.func.isRequired,
-  updateAmountRequest: PropTypes.func.isRequired,
+  }).isRequired,
+  total: PropTypes.shape({}).isRequired,
+  removeToCart: PropTypes.shape({}).isRequired,
+  updateAmountRequest: PropTypes.shape({}).isRequired,
 };
-
-const mapStateToProps = (state) => ({
-  cart: state.Cart.map((product) => ({
-    ...product,
-    subtotal: formatPrice(product.price * product.amount),
-  })),
-
-  total: formatPrice(
-    state.Cart.reduce((total, product) => {
-      return total + product.price * product.amount;
-    }, 0)
-  ),
-});
-
-const mapDispatchToProps = (dispatch) =>
-  bindActionCreators(CartAction, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cart);
